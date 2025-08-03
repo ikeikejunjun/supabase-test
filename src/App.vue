@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import { supabase } from './lib/supabase'
-import { onMounted } from 'vue'
+import { RouterLink, RouterView } from 'vue-router';
+import { supabase } from './lib/supabase';
+import { onMounted } from 'vue';
 
 onMounted(async () => {
-  const { data: { session } } = await supabase.auth.getSession()
-  console.log('現在のユーザー:', session?.user)
-})
+  const { data: { session } } = await supabase.auth.getSession();
+  console.log('現在のユーザー:', session?.user);
+});
 </script>
 
 <template>

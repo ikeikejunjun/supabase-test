@@ -12,26 +12,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { supabase } from '../lib/supabase'
+import { ref } from 'vue';
+import { supabase } from '../lib/supabase';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
-const email = ref('')
-const password = ref('')
-const errorMessage = ref('')
-const userEmail = ref('')
+const email = ref('');
+const password = ref('');
+const errorMessage = ref('');
+const userEmail = ref('');
 
 const login = async () => {
-    errorMessage.value = ''
-    userEmail.value = ''
+    errorMessage.value = '';
+    userEmail.value = '';
     const { data, error } = await supabase.auth.signInWithPassword({
         email: email.value,
         password: password.value,
-    })
+    });
 
     if (error) {
-        errorMessage.value = error.message
+        errorMessage.value = error.message;
     } else {
-        userEmail.value = data.user?.email ?? '不明なユーザー'
+        userEmail.value = data.user?.email ?? '不明なユーザー';
+        await router.push('/todos');
     }
 }
 </script>
