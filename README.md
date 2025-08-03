@@ -1,5 +1,11 @@
 # supabase-test
 
+Supabaseをバックエンドに使った、Vue+TypeScriptのTODOアプリ的なものを作成しました。多分、世の中に無限にあると思います。
+
+以下、標準出力
+
+---
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
