@@ -58,13 +58,20 @@ jobs:
 
               const exists = issues.some(issue => issue.title === issueTitle);
               if (exists) continue;
-              
-              const ruleId = alert.rule?.id || "unknown-rule";
-              const ruleSeverity = alert.rule?.severity || "unknown";
-              const ruleDescription = alert.rule?.description || "No description available";
-              
-              // Issue本文を作成
-             const body ="**Rule**: " + ruleId + "\n**Severity**: " + severity + "\n**File**: " + file + "\n**URL**: " + alert.html_url + "\n\n**Details:**\n" + description + "\n\n@github-copilot please suggest a fix\ncc @ikeikejunjun";
+
+              // Issue本文を作成（Copilot向け指示を追加）
+              const body = `
+**Rule**: ${ruleId}  
+**Severity**: ${alert.rule.severity}  
+**File**: ${file}  
+**URL**: ${alert.html_url}  
+
+**Details:**  
+${alert.rule.description}
+
+@github-copilot please suggest a fix
+cc @ikeikejunjun
+              `;
 
               await github.rest.issues.create({
                 owner: context.repo.owner,
