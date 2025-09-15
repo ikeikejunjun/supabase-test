@@ -2,10 +2,20 @@
 import { RouterLink, RouterView } from 'vue-router';
 import { supabase } from './lib/supabase';
 import { onMounted } from 'vue';
+import { useAuthStore } from './stores/auth';
+
+const authStore = useAuthStore();
 
 onMounted(async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-  console.log('現在のユーザー:', session?.user);
+  // Initialize auth state
+  await authStore.initializeAuth();
+  
+  // Listen for auth state changes
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log('Auth state changed:', event, session?.user);
+    authStore.user = session?.user ?? null;
+    authStore.isAuthenticated = !!session?.user;
+  });
 });
 </script>
 
