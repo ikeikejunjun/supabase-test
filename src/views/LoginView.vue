@@ -13,9 +13,11 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { supabase } from '../lib/supabase';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
+
 const router = useRouter();
+const authStore = useAuthStore();
 
 const email = ref('');
 const password = ref('');
@@ -25,16 +27,13 @@ const userEmail = ref('');
 const login = async () => {
     errorMessage.value = '';
     userEmail.value = '';
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.value,
-        password: password.value,
-    });
-
-    if (error) {
-        errorMessage.value = error.message;
-    } else {
+    
+    try {
+        const data = await authStore.login(email.value, password.value);
         userEmail.value = data.user?.email ?? '不明なユーザー';
         await router.push('/todos');
+    } catch (error: any) {
+        errorMessage.value = error.message;
     }
 }
 </script>
