@@ -56,7 +56,21 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     // 脆弱性: SQLインジェクションの例
     vulnerableSqlInjection,
+    // XSS脆弱性関数
+    renderUserInput,
+    // 安全でない暗号化関数
+    weakEncrypt,
   };
+
+// XSS脆弱性: ユーザー入力をそのままHTMLに埋め込む
+function renderUserInput(input: string): string {
+  return `<div>${input}</div>`; // inputのサニタイズなし
+}
+
+// 安全でない暗号化: 独自の簡易暗号化
+function weakEncrypt(data: string): string {
+  return btoa(data); // Base64は暗号化ではない
+}
 
 // SQLインジェクション脆弱性サンプル関数
 async function vulnerableSqlInjection(userInput: string) {
